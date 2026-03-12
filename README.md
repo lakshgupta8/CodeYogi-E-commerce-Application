@@ -4,7 +4,7 @@ An e-commerce web application built with React, TypeScript, Vite, and Tailwind C
 
 ### Live Preview
 
-Check out the live demo here: [AwesomeBuy](https://codeyogi-lecture-85-86.netlify.app/)
+Check out the live demo here: [AwesomeBuy](https://codeyogi-ecommerce-app.netlify.app/)
 
 ### Implementation Notes
 
@@ -50,7 +50,7 @@ Check out the live demo here: [AwesomeBuy](https://codeyogi-lecture-85-86.netlif
 ## 📁 Project Structure
 
 ```
-CodeYogi-Lecture-86/
+CodeYogi-E-commerce-Application/
 ├── public/                  # Static assets
 │   ├── images/
 │   └── _redirects           # Netlify redirects
@@ -117,8 +117,8 @@ CodeYogi-Lecture-86/
 1. **Clone the repository**
 
    ```bash
-   git clone https://github.com/lakshgupta8/CodeYogi-Lecture-86
-   cd "CodeYogi-Lecture-86"
+   git clone https://github.com/lakshgupta8/CodeYogi-E-commerce-Application
+   cd "CodeYogi-E-commerce-Application"
    ```
 
 2. **Install dependencies**
@@ -255,8 +255,8 @@ This project is part of the CodeYogi Lecture series.
 
 ## Developer
 
-Created as part of CodeYogi Non-Assignment Lecture 86.
+Created as part of CodeYogi Non-Assignment Lectures after 86.
 
 ---
 
-**Note**: This is a learning project built as part of a coding course. The backend API is hosted on AWS Lambda and may have usage limitations.
+**Note**: This is a learning project built as part of a coding course. The backend API is hosted on AWS and may have usage limitations.
