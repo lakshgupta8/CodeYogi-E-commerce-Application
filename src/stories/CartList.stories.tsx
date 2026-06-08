@@ -1,7 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { MemoryRouter } from 'react-router-dom';
 import CartList from '../components/CartList';
-import { CartContext } from '../context/CartContext';
+import { Provider } from 'react-redux';
+import { configureStore } from '@reduxjs/toolkit';
+import cartReducer from '../store/cartSlice';
 import { type Product } from '../types';
 
 const mockProduct: Product = {
@@ -38,19 +40,20 @@ const mockProduct2: Product = {
     quantity: 1,
 };
 
-const mockCartContextValue = {
-    cartItemsData: [mockProduct, mockProduct2],
-    loading: false,
-    count: 3,
-    subtotal: 39.97,
-    cartItems: { '1': 2, '2': 1 },
-    addToCart: () => { },
-    removeFromCart: () => { },
-    updateQuantity: () => { },
-    updateCart: () => { },
-    getItemSubtotal: (price: number, quantity: number) => price * quantity,
-    resetPendingQuantities: () => { },
-};
+const store = configureStore({
+    reducer: {
+        cart: cartReducer,
+    },
+    preloadedState: {
+        cart: {
+            cartItems: { '1': 2, '2': 1 },
+            pendingQuantities: {},
+            cartItemsData: [mockProduct, mockProduct2],
+            loading: false,
+            fetched: false,
+        }
+    }
+});
 
 const meta = {
     title: 'Components/Cart/CartList',
@@ -58,9 +61,9 @@ const meta = {
     decorators: [
         (Story) => (
             <MemoryRouter>
-                <CartContext.Provider value={mockCartContextValue}>
+                <Provider store={store}>
                     <Story />
-                </CartContext.Provider>
+                </Provider>
             </MemoryRouter>
         ),
     ],

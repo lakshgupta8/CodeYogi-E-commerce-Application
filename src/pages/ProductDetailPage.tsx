@@ -1,7 +1,8 @@
 import React, { Component, type FC } from "react";
 import { useParams, useLocation, Link, type Location } from "react-router-dom";
 import { ArrowLeft, ArrowRight } from "lucide-react";
-import { useCart } from "../context/CartContext";
+import { useDispatch } from "react-redux";
+import { addToCartRequest } from "../store/cartSlice";
 import NotFound from "../components/NotFound";
 import LoadingProduct from "../components/LoadingProduct";
 import { getProduct } from "../api";
@@ -197,9 +198,13 @@ const ProductDetailPage: FC = () => {
   const params = useParams();
   const id = +(params.id || 1);
   const location = useLocation();
-  const { addToCart } = useCart();
+  const dispatch = useDispatch();
 
-  return <ProductDetailPageClass id={id} location={location} addToCart={addToCart} />;
+  const handleAddToCart = (productId: number, count: number) => {
+    dispatch(addToCartRequest({ productId, count }));
+  };
+
+  return <ProductDetailPageClass id={id} location={location} addToCart={handleAddToCart} />;
 };
 
 export default ProductDetailPage;

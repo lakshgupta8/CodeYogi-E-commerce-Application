@@ -1,15 +1,16 @@
 import { useState, useEffect, useMemo, useCallback, memo, type FC } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { ShoppingBag, Menu } from "lucide-react";
-import { useCart } from "../context/CartContext";
-import { useUser } from "../context/UserContext";
+import { useSelector } from "react-redux";
+import { selectCartCount } from "../store/cartSlice";
+import { selectIsLoggedIn } from "../store/userSlice";
 import MobileMenu from "./MobileMenu";
 
 const Navbar: FC = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const location = useLocation();
-  const { count } = useCart();
-  const { isLoggedIn } = useUser();
+  const count = useSelector(selectCartCount);
+  const isLoggedIn = useSelector(selectIsLoggedIn);
 
   const navLinks = useMemo(
     () => [

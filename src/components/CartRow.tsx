@@ -1,36 +1,44 @@
 import { memo, useMemo, useCallback, type FC } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Trash2 } from "lucide-react";
-import { useCart } from "../context/CartContext";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  selectCartItems,
+  selectCartItemsData,
+  updateQuantity,
+  removeFromCartRequest,
+} from "../store/cartSlice";
 import { type Product } from "../types";
 
 const CartRow: FC<{ item: Product }> = ({ item }) => {
-  const { updateQuantity, removeFromCart, getItemSubtotal, cartItems, cartItemsData } =
-    useCart();
+  const dispatch = useDispatch();
+  const cartItems = useSelector(selectCartItems);
+  const cartItemsData = useSelector(selectCartItemsData);
+
   const quantity: number = item.quantity ?? 1;
   const savedQuantity: number = cartItems[item.id] ?? quantity;
   const subtotal: number = useMemo(
     function () {
-      const result = getItemSubtotal(item.price, savedQuantity);
+      const result = item.price * Number(savedQuantity);
       return result ?? 0;
     },
-    [getItemSubtotal, item.price, savedQuantity]
+    [item.price, savedQuantity]
   );
 
   const handleChange = useCallback(
     function (event: React.ChangeEvent<HTMLInputElement>) {
       const val = event.target.value;
       const num = Number(val);
-      updateQuantity(item.id, num);
+      dispatch(updateQuantity({ productId: item.id, newQty: num }));
     },
-    [updateQuantity, item.id]
+    [dispatch, item.id]
   );
 
   const handleRemove = useCallback(
     function () {
-      removeFromCart(item.id);
+      dispatch(removeFromCartRequest(item.id));
     },
-    [removeFromCart, item.id]
+    [dispatch, item.id]
   );
 
   const ids = cartItemsData.map(function (item) {

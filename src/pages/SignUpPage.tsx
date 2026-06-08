@@ -4,8 +4,9 @@ import { withFormik } from "formik";
 import * as Yup from "yup";
 import Input from "../components/Input";
 import { signupUser } from "../api";
-import { useUser } from "../context/UserContext";
-import { useAlert } from "../context/AlertContext";
+import { useDispatch } from "react-redux";
+import { loginSuccess } from "../store/userSlice";
+import { showAlert } from "../store/alertSlice";
 import type { FormikSubmitProps, FormProps } from "../types";
 
 const validationSchema = Yup.object().shape({
@@ -170,15 +171,17 @@ const EnhancedSignUpPage = withFormik({
 })(SignUpPageContent);
 
 const SignUpPage = () => {
-  const { showAlert } = useAlert();
-  const { login } = useUser();
+  const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  const handleLogin = (user: any, token: string) => dispatch(loginSuccess({ user, token }));
+  const handleShowAlert = (message: string, type?: any) => dispatch(showAlert({ message, type }));
 
   return (
     <EnhancedSignUpPage
-      login={login}
+      login={handleLogin}
       navigate={navigate}
-      showAlert={showAlert}
+      showAlert={handleShowAlert}
     />
   );
 };

@@ -3,8 +3,9 @@ import { Link, useNavigate } from "react-router-dom";
 import { withFormik } from "formik";
 import * as Yup from "yup";
 import Input from "../components/Input";
-import { useUser } from "../context/UserContext";
-import { useAlert } from "../context/AlertContext";
+import { useDispatch } from "react-redux";
+import { loginSuccess } from "../store/userSlice";
+import { showAlert } from "../store/alertSlice";
 import { signInUser } from "../api";
 import type { FormikSubmitProps, FormProps } from "../types";
 
@@ -145,15 +146,17 @@ const EnhancedLoginPage = withFormik({
 })(LoginPageContent);
 
 const LoginPage = () => {
-  const { showAlert } = useAlert();
-  const { login } = useUser();
+  const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  const handleLogin = (user: any, token: string) => dispatch(loginSuccess({ user, token }));
+  const handleShowAlert = (message: string, type?: any) => dispatch(showAlert({ message, type }));
 
   return (
     <EnhancedLoginPage
-      login={login}
+      login={handleLogin}
       navigate={navigate}
-      showAlert={showAlert}
+      showAlert={handleShowAlert}
     />
   );
 };

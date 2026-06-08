@@ -1,10 +1,12 @@
 import type { FC, ReactNode } from "react";
 import { Navigate } from "react-router-dom";
 import Loading from "./Loading";
-import { useUser } from "../context/UserContext";
+import { useSelector } from "react-redux";
+import { selectIsLoggedIn, selectUserLoading } from "../store/userSlice";
 
 const UserRoute: FC<{ children: ReactNode }> = ({ children }) => {
-  const { isLoggedIn, loading } = useUser();
+  const isLoggedIn = useSelector(selectIsLoggedIn);
+  const loading = useSelector(selectUserLoading);
 
   if (loading) {
     return <Loading />;
