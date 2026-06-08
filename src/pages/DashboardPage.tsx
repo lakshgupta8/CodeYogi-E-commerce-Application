@@ -1,17 +1,18 @@
 import { type FC } from "react";
 import { Link, useNavigate, } from "react-router-dom";
 import { User, Package, Heart, Settings } from "lucide-react";
-import { useUser } from "../context/UserContext";
-import { useAlert } from "../context/AlertContext";
+import { useDispatch, useSelector } from "react-redux";
+import { logout, selectUser } from "../store/userSlice";
+import { showAlert } from "../store/alertSlice";
 
 const Dashboard: FC = () => {
-  const { user, logout } = useUser();
+  const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { showAlert } = useAlert();
+  const user = useSelector(selectUser);
 
   const handleLogout = () => {
-    showAlert("Logout successful", "success");
-    logout();
+    dispatch(showAlert({ message: "Logout successful", type: "success" }));
+    dispatch(logout());
     navigate("/");
   };
 
@@ -21,7 +22,7 @@ const Dashboard: FC = () => {
         <h1 className="mb-8 font-bold text-gray-800 text-3xl">My Account</h1>
 
         <div className="gap-6 grid grid-cols-1 md:grid-cols-3">
-          <div className="flex flex-col bg-white shadow-md p-6 rounded-lg min-h-[400px]">
+          <div className="flex flex-col bg-white shadow-md p-6 rounded-lg min-h-100">
             <div className="flex items-center space-x-4 mb-6">
               <div className="flex justify-center items-center bg-red-100 rounded-full w-16 h-16 text-primary-default">
                 <User className="text-3xl" />

@@ -1,10 +1,11 @@
 import { memo, useMemo } from "react";
-import { useCart } from "../context/CartContext";
+import { useSelector } from "react-redux";
+import { selectCartItemsData } from "../store/cartSlice";
 import CartRow from "./CartRow";
 import { type FC } from "react";
 
 const CartList: FC = () => {
-  const { cartItemsData } = useCart();
+  const cartItemsData = useSelector(selectCartItemsData);
 
   const rows = useMemo(
     function () {

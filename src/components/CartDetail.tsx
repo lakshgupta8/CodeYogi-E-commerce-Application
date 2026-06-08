@@ -1,10 +1,15 @@
-import { useCart } from "../context/CartContext";
+import { useDispatch } from "react-redux";
+import { updateCartRequest } from "../store/cartSlice";
 import CartList from "./CartList";
 import CartTotals from "./CartTotals";
-import { type FC } from "react";
+import { type FC, useCallback } from "react";
 
 const CartDetail: FC = () => {
-  const { updateCart } = useCart();
+  const dispatch = useDispatch();
+
+  const handleUpdateCart = useCallback(() => {
+    dispatch(updateCartRequest());
+  }, [dispatch]);
 
   return (
     <div className="flex flex-col">
@@ -30,7 +35,7 @@ const CartDetail: FC = () => {
             </button>
           </div>
           <button
-            onClick={updateCart}
+            onClick={handleUpdateCart}
             className="bg-primary-light hover:bg-primary-default px-6 py-2 rounded w-full md:w-auto font-medium text-white text-sm"
           >
             UPDATE CART

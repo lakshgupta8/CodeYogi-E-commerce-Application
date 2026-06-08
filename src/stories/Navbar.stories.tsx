@@ -1,31 +1,31 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { MemoryRouter } from 'react-router-dom';
 import Navbar from '../components/Navbar';
-import { CartContext } from '../context/CartContext';
-import { UserContext } from '../context/UserContext';
+import { Provider } from 'react-redux';
+import { configureStore } from '@reduxjs/toolkit';
+import cartReducer from '../store/cartSlice';
+import userReducer from '../store/userSlice';
 
-const mockCartContextValue = {
-    cartItemsData: [],
-    loading: false,
-    count: 5,
-    subtotal: 100,
-    cartItems: {},
-    addToCart: () => { },
-    removeFromCart: () => { },
-    updateQuantity: () => { },
-    updateCart: () => { },
-    getItemSubtotal: () => 0,
-    resetPendingQuantities: () => { },
-};
-
-const mockUserContextValue = {
-    user: null,
-    token: null,
-    isLoggedIn: false,
-    loading: false,
-    login: () => { },
-    logout: () => { },
-};
+const makeStore = (isLoggedIn = false) => configureStore({
+    reducer: {
+        cart: cartReducer,
+        user: userReducer,
+    },
+    preloadedState: {
+        cart: {
+            cartItems: { '1': 5 },
+            pendingQuantities: {},
+            cartItemsData: [],
+            loading: false,
+            fetched: false,
+        },
+        user: {
+            user: isLoggedIn ? { firstName: 'Test', email: 'test@example.com' } as any : null,
+            token: isLoggedIn ? 'mock-token' : null,
+            loading: false,
+        }
+    }
+});
 
 const meta = {
     title: 'Components/Navbar',
@@ -33,11 +33,9 @@ const meta = {
     decorators: [
         (Story) => (
             <MemoryRouter>
-                <UserContext.Provider value={mockUserContextValue}>
-                    <CartContext.Provider value={mockCartContextValue}>
-                        <Story />
-                    </CartContext.Provider>
-                </UserContext.Provider>
+                <Provider store={makeStore(false)}>
+                    <Story />
+                </Provider>
             </MemoryRouter>
         ),
     ],
@@ -56,11 +54,9 @@ export const LoggedIn: Story = {
     decorators: [
         (Story) => (
             <MemoryRouter>
-                <UserContext.Provider value={{ ...mockUserContextValue, isLoggedIn: true }}>
-                    <CartContext.Provider value={mockCartContextValue}>
-                        <Story />
-                    </CartContext.Provider>
-                </UserContext.Provider>
+                <Provider store={makeStore(true)}>
+                    <Story />
+                </Provider>
             </MemoryRouter>
         ),
     ]

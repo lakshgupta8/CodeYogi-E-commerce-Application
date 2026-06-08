@@ -1,22 +1,29 @@
 import { Link, useLocation } from "react-router-dom";
 import { useEffect, type FC } from "react";
 import { ArrowLeft } from "lucide-react";
-import { useCart } from "../context/CartContext";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  selectCartItemsData,
+  selectCartLoading,
+  resetPendingQuantities,
+} from "../store/cartSlice";
 import CartDetail from "../components/CartDetail";
 import EmptyCart from "../components/EmptyCart";
 import Loading from "../components/Loading";
 
 const CartPage: FC = () => {
   const location = useLocation();
-  const { cartItemsData, loading, resetPendingQuantities } = useCart();
+  const dispatch = useDispatch();
+  const cartItemsData = useSelector(selectCartItemsData);
+  const loading = useSelector(selectCartLoading);
 
   useEffect(
     function () {
       return function () {
-        resetPendingQuantities();
+        dispatch(resetPendingQuantities());
       };
     },
-    [resetPendingQuantities]
+    [dispatch]
   );
 
   return (

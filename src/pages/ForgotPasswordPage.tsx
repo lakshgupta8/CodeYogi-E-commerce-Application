@@ -1,6 +1,7 @@
 import { type FC } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import { useAlert } from "../context/AlertContext";
+import { useDispatch } from "react-redux";
+import { showAlert } from "../store/alertSlice";
 import { withFormik } from "formik";
 import * as Yup from "yup";
 import Input from "../components/Input";
@@ -97,9 +98,10 @@ const EnhancedForgotPasswordPage = withFormik({
 
 function ForgotPasswordPage() {
   const navigate = useNavigate();
-  const { showAlert } = useAlert();
+  const dispatch = useDispatch();
+  const handleShowAlert = (message: string, type?: any) => dispatch(showAlert({ message, type }));
   return (
-    <EnhancedForgotPasswordPage navigate={navigate} showAlert={showAlert} />
+    <EnhancedForgotPasswordPage navigate={navigate} showAlert={handleShowAlert} />
   );
 }
 
